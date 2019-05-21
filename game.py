@@ -27,8 +27,9 @@ class Game:
 		self.check_events()
 		self.segway.update_position()
 		self.draw()
-		pg.display.update()
-		pg.time.Clock().tick(100)
+		# pg.display.update()
+		pg.display.flip()
+		# clock.tick(30)
 
 	def check_events(self):
 		for event in pg.event.get():
