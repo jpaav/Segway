@@ -1,5 +1,6 @@
 import pygame as pg
 from segway import Segway
+from graph import Graph
 
 class Game:
 	def __init__(self):
@@ -7,6 +8,7 @@ class Game:
 		self.height = 800
 		self.should_quit = False
 		self.segway = Segway()
+		self.graph = Graph()
 
 		# Init PyGame
 		(passed, failed) = pg.init()
@@ -53,3 +55,4 @@ class Game:
 	def draw(self):
 		self.screen.fill([0, 200, 0])
 		self.segway.draw(self.screen)
+		self.graph.draw(self.screen)

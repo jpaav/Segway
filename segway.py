@@ -41,14 +41,13 @@ class Segway(pg.sprite.Sprite):
 	def update_position(self):
 		if self.moveright:
 			self.position[0] += self.speed
-			self.angle += 2
-			self.rotate()
+			self.angle += 5
 
 		if self.moveleft:
 			self.position[0] -= self.speed
-			self.angle -= 2
-			self.rotate()
+			self.angle -= 5
 		self.angle += self.pid.pid(self.angle, 0)
+		self.rotate()
 
 	def rotate(self):
 		"""Rotate the image of the sprite around a pivot point."""
