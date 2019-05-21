@@ -1,21 +1,27 @@
 import pygame as pg
 import numpy as np
+from pygame.math import Vector2
 
+class Segway(pg.sprite.Sprite):
 
-class Segway:
 	def __init__(self, width=200, height=200):
+		super().__init__()
 		self.width = width
 		self.height = height
 		self.image = pg.image.load('resources/segway.png')
 		self.image = pg.transform.scale(self.image, (self.width, self.height))
-		self.position = np.array([0, 0])
+		self.position = Vector2(250, 250)
 		self.moveright = False
 		self.moveleft = False
 		self.angle = 0
-		self.image_rect = self.image.get_rect()
+		# A reference to the original image to preserve the quality.
+		self.orig_image = self.image.copy()
+		self.rect = self.image.get_rect(center=self.position)
+		self.offset = Vector2(0, -50)  # We shift the sprite 50 px to the right.
+		self.angle = 0
 
 	def draw(self, screen):
-		screen.blit(self.image, self.image_rect)
+		screen.blit(self.image, self.rect)
 
 	def move_right(self):
 		self.moveright = True
@@ -32,17 +38,20 @@ class Segway:
 	def update_position(self):
 		if self.moveright:
 			self.position[0] += 10
-			self.image = self.rotate(5)
+			self.angle += 2
+			self.rotate()
 
 		if self.moveleft:
 			self.position[0] -= 10
-			self.image = self.rotate(-5)
+			self.angle -= 2
+			self.rotate()
 
-	def rotate(self, angle):
-		image_orig = self.image
-		self.image_rect = image_orig.get_rect(center=self.image_rect.center)
-		# process
-		image = pg.transform.rotate(image_orig, angle)
-		self.image_rect = image.get_rect(center=self.image_rect.center)
-		self.image = image
+	def rotate(self):
+		"""Rotate the image of the sprite around a pivot point."""
+		# Rotate the image.
+		self.image = pg.transform.rotozoom(self.orig_image, -self.angle, 1)
+		# Rotate the offset vector.
+		offset_rotated = self.offset.rotate(self.angle)
+		# Create a new rect with the center of the sprite + the offset.
+		self.rect = self.image.get_rect(center=self.position + offset_rotated)
 
