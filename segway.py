@@ -1,15 +1,16 @@
 import pygame as pg
 from pygame.math import Vector2
 from PID import PID
+import math
 
 
 class Segway(pg.sprite.Sprite):
 
-	def __init__(self, width=200, height=200, speed=20):
+	def __init__(self, width=250, height=250, speed=20):
 		super().__init__()
 		self.width = width
 		self.height = height
-		self.image = pg.image.load('resources/segway.png')
+		self.image = pg.image.load('resources/beck_segway_final.png')
 		self.image = pg.transform.scale(self.image, (self.width, self.height))
 		self.position = Vector2(250, 250)
 		self.moveright = False
@@ -22,6 +23,7 @@ class Segway(pg.sprite.Sprite):
 		self.rect = self.image.get_rect(center=self.position)
 		self.offset = Vector2(0, -50)  # We shift the sprite 50 px to the right.
 		self.angle = 0
+		self.angle_vel = 0
 
 	def draw(self, screen):
 		screen.blit(self.image, self.rect)
@@ -46,8 +48,18 @@ class Segway(pg.sprite.Sprite):
 		if self.moveleft:
 			self.position[0] -= self.speed
 			self.angle -= 5
-		self.angle += self.pid.pid(self.angle, 0)
+
+		accel = 10
+		self.angle_vel += math.sin((self.angle/180)*math.pi)*accel
+		self.angle += self.angle_vel + self.pid.pid(self.angle, 0)
 		self.rotate()
+
+		if self.angle > 90:
+			self.angle = 90
+			self.angle_vel = 0
+		elif self.angle < -90:
+			self.angle = -90
+			self.angle_vel = 0
 
 	def rotate(self):
 		"""Rotate the image of the sprite around a pivot point."""

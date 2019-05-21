@@ -10,6 +10,7 @@ pygame = "==1.9.5"
 numpy = "*"
 matplotlib = "*"
 thorpy = "*"
+kivy = "*"
 
 [requires]
 python_version = "3.7"
