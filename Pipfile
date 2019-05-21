@@ -9,6 +9,7 @@ verify_ssl = true
 pygame = "==1.9.5"
 numpy = "*"
 matplotlib = "*"
+thorpy = "*"
 
 [requires]
 python_version = "3.7"

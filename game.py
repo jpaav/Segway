@@ -29,6 +29,8 @@ class Game:
 		self.check_events()
 		self.segway.update_position()
 		self.draw()
+		self.graph.add_data_point(self.segway.angle)
+		self.graph.update_graph()
 		# pg.display.update()
 		pg.display.flip()
 		# clock.tick(30)
