@@ -21,6 +21,7 @@ class Game:
 		# Create screen with given dimensions
 		self.screen = pg.display.set_mode((self.width, self.height))
 		pg.display.set_caption("Segway")
+		pg.display.set_icon(pg.image.load("resources/beck_icon.png"))
 
 		# Objects
 		self.segway = Segway()
