@@ -27,7 +27,7 @@ class ComplexButton(pg.sprite.Sprite):
 			self.surf.fill(self.ON_COLOR)
 		else:
 			self.surf.fill(self.OFF_COLOR)
-		pg.font.init()
+		# pg.font.init()
 		self.font = pg.font.SysFont('freesansbold.ttf', 16)
 		self.label = label
 
@@ -36,7 +36,7 @@ class ComplexButton(pg.sprite.Sprite):
 		screen.blit(self.font.render("<", True, [255, 255, 255]), (self.left_rect.centerx-2, self.left_rect.centery-5))
 		screen.blit(self.font.render(">", True, [255, 255, 255]), (self.right_rect.centerx-2, self.right_rect.centery-5))
 		screen.blit(self.font.render(self.label, True, [255, 255, 255]), (self.left_rect.left, self.left_rect.top-10))
-		screen.blit(self.font.render("{:.1f}".format(self.value), True, [255, 255, 255]), (self.center_rect.centerx-2, self.center_rect.centery-5))
+		screen.blit(self.font.render("{:.1f}".format(self.value), True, [255, 255, 255]), (self.center_rect.centerx-3, self.center_rect.centery-5))
 
 
 	def click_at(self, pos):

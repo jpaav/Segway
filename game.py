@@ -1,5 +1,6 @@
 import pygame as pg
 
+from button import Button
 from complex_button import ComplexButton
 from segway import Segway
 from graph import Graph
@@ -10,20 +11,33 @@ class Game:
 		self.width = 800
 		self.height = 800
 		self.should_quit = False
-		self.segway = Segway()
-		self.graph = Graph()
-		self.kp_button = ComplexButton(x=50, y=400, label="Kp")
-		self.ki_button = ComplexButton(x=250, y=400, label="Ki")
-		self.kd_button = ComplexButton(x=450, y=400, label="Kd")
 
 		# Init PyGame
 		(passed, failed) = pg.init()
 		print("Number of modules successfully loaded: " + str(passed))
 		print("Number of modules failed to load: " + str(failed))
+		pg.font.init()
 
 		# Create screen with given dimensions
 		self.screen = pg.display.set_mode((self.width, self.height))
 		pg.display.set_caption("Segway")
+
+		# Objects
+		self.segway = Segway()
+		self.graph = Graph()
+		self.kp_button = ComplexButton(x=50, y=400, label="Kp")
+		self.ki_button = ComplexButton(x=250, y=400, label="Ki")
+		self.kd_button = ComplexButton(x=450, y=400, label="Kd")
+		self.reset_button = Button(self.reset, "Reset", x=650, y=400)
+
+	# This is a callback function passed to the reset button
+	# This code is jank, fixing it may have performance increases on reset
+	def reset(self):
+		self.segway = Segway()
+		self.graph = Graph()
+		self.kp_button = ComplexButton(x=50, y=400, label="Kp")
+		self.ki_button = ComplexButton(x=250, y=400, label="Ki")
+		self.kd_button = ComplexButton(x=450, y=400, label="Kd")
 
 	def start(self):
 		# Loop until should_quit is changed to true
@@ -61,6 +75,7 @@ class Game:
 					self.segway.stop_moving_right()
 			if event.type == pg.MOUSEBUTTONDOWN:
 				pos = pg.mouse.get_pos()
+				self.reset_button.click_at(pos)
 				if self.kp_button.click_at(pos):
 					self.segway.pid.p_enabled = self.kp_button.boolean
 					self.segway.pid.Kp = self.kp_button.value
@@ -78,3 +93,4 @@ class Game:
 		self.kp_button.draw(self.screen)
 		self.ki_button.draw(self.screen)
 		self.kd_button.draw(self.screen)
+		self.reset_button.draw()
