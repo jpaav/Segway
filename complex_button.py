@@ -27,7 +27,6 @@ class ComplexButton(pg.sprite.Sprite):
 			self.surf.fill(self.ON_COLOR)
 		else:
 			self.surf.fill(self.OFF_COLOR)
-		# pg.font.init()
 		self.font = pg.font.SysFont('freesansbold.ttf', 16)
 		self.label = label
 

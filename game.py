@@ -16,7 +16,6 @@ class Game:
 		(passed, failed) = pg.init()
 		print("Number of modules successfully loaded: " + str(passed))
 		print("Number of modules failed to load: " + str(failed))
-		pg.font.init()
 
 		# Create screen with given dimensions
 		self.screen = pg.display.set_mode((self.width, self.height))
@@ -26,7 +25,7 @@ class Game:
 		# Objects
 		self.segway = Segway()
 		self.graph = Graph()
-		self.kp_button = ComplexButton(x=50, y=400, label="Kp")
+		self.kp_button = ComplexButton(x=50, y=400, label="Kp", value_velocity=1)
 		self.ki_button = ComplexButton(x=250, y=400, label="Ki")
 		self.kd_button = ComplexButton(x=450, y=400, label="Kd")
 		self.reset_button = Button(self.reset, "Reset", x=650, y=400)
@@ -36,7 +35,7 @@ class Game:
 	def reset(self):
 		self.segway = Segway()
 		self.graph = Graph()
-		self.kp_button = ComplexButton(x=50, y=400, label="Kp")
+		self.kp_button = ComplexButton(x=50, y=400, label="Kp", value_velocity=1)
 		self.ki_button = ComplexButton(x=250, y=400, label="Ki")
 		self.kd_button = ComplexButton(x=450, y=400, label="Kd")
 
@@ -51,6 +50,7 @@ class Game:
 		self.segway.update_position()
 		self.draw()
 		self.graph.add_data_point(self.segway.angle)
+		self.graph.add_data_point2(self.segway.pid.last_output)
 		self.graph.update_graph()
 		# pg.display.update()
 		pg.display.flip()

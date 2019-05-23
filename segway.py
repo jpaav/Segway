@@ -41,17 +41,18 @@ class Segway(pg.sprite.Sprite):
 		self.moveleft = False
 
 	def update_position(self):
+		accel = 2
+		self.angle_vel += math.sin((self.angle / 180) * math.pi) * accel
+		self.angle += self.angle_vel + self.pid.pid(self.angle, 0)
+
 		if self.moveright:
 			self.position[0] += self.speed
-			self.angle += 5
+			self.angle += 10
 
 		if self.moveleft:
 			self.position[0] -= self.speed
-			self.angle -= 5
+			self.angle -= 10
 
-		accel = 10
-		self.angle_vel += math.sin((self.angle/180)*math.pi)*accel
-		self.angle += self.angle_vel + self.pid.pid(self.angle, 0)
 		self.rotate()
 
 		if self.angle > 90:
@@ -69,4 +70,11 @@ class Segway(pg.sprite.Sprite):
 		offset_rotated = self.offset.rotate(self.angle)
 		# Create a new rect with the center of the sprite + the offset.
 		self.rect = self.image.get_rect(center=self.position + offset_rotated)
+
+	def reset(self):
+		self.angle_vel = 0
+		self.angle = 0
+		self.position = Vector2(250, 250)
+		self.pid.reset_history()
+
 

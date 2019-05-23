@@ -12,6 +12,14 @@ class PID:
 		self.p_enabled = True
 		self.i_enabled = True
 		self.d_enabled = True
+		self.last_output = 0
+		self.last_error = 0
+
+	def reset_history(self):
+		self.integral = 0
+		self.last_error = 0
+		self.last_output = 0
+		self.last_time = time.time()
 
 	def pid(self, input, setpoint):
 		error = setpoint - input
@@ -25,6 +33,8 @@ class PID:
 		if self.i_enabled:
 			output += self.Ki*self.integral
 		if self.d_enabled:
-			output += self.Kd*derivative
+			output -= self.Kd*derivative
 		self.last_error = error
+		self.last_time = current_time
+		self.last_output = output
 		return output
